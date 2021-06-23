@@ -10,7 +10,7 @@ import yaml
 
 from .fixtures.git import git_origin_url, git_repo  # pylint: disable=unused-import
 from .fixtures.github import github_client, github_repo  # pylint: disable=unused-import
-from .utils import get_git_origin
+from .utils import get_git_origin_url
 
 session_data_holder_dict = defaultdict(dict)
 session_data_holder_dict["TIMESTAMP"] = datetime.datetime.now().date()
@@ -44,7 +44,7 @@ def pytest_configure(config):
         # it gives error for import mismatch as it collects same check from both directories
         # Hence if origin is same for repo_path and repo_health_path then don't
         # import checks from repo_path
-        if get_git_origin(repo_path) != get_git_origin(repo_health_path):
+        if get_git_origin_url(repo_path) != get_git_origin_url(repo_health_path):
             config.args.append(os.path.abspath(repo_path))
 
         if repo_health_path is not None:

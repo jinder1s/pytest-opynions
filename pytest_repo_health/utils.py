@@ -1,15 +1,12 @@
 """
 Utilities for pytest plugin
 """
-import re
 from pathlib import Path
 
 from git import Repo
 
-URL_PATTERN = r"(git@|https://)([\w\.@]+)(/|:)(?P<owner>[\w,\-,\_]+)/(?P<repo_name>[\w,\-,\_]+)(.git){0,1}((/){0,1})"
 
-
-def get_git_origin(repo_path):
+def get_git_origin_url(repo_path):
     """
     Returns the origin url for the repo_path provided, returns None if doesn't has a remote origin.
     """
@@ -27,5 +24,4 @@ def get_git_origin(repo_path):
     except AttributeError:
         # This local repository isn't linked to an online origin
         return None
-    match = re.search(URL_PATTERN, origin.url)
-    return match.group("repo_name")
+    return origin.url
