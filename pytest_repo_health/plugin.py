@@ -33,6 +33,11 @@ def pytest_configure(config):
     """
     pytest hook used to add plugin install dir as place for pytest to find tests
     """
+    # Registering edx_health and py_dependency_health markers
+    config.addinivalue_line(
+        "markers", "edx_health: custom marker to select edx and openedx health checks\n"
+                   "py_dependency_health: custom marker to select py dependencies health checks"
+    )
 
     if config.getoption("repo_health"):
 
@@ -135,18 +140,6 @@ def repo_health(request):
         no repo_health checks will be run, other tests may or may not be run
     """
     return request.config.option.repo_health
-
-
-def pytest_ignore_collect(path, config):
-    """
-    pytest hook that determines if pytest looks at specific file to collect tests
-    if repo_health is set to true:
-        only tests in test files with "repo_health" in their path will be collected
-    """
-    if config.getoption("repo_health"):
-        if "/repo_health" not in str(path):
-            return True
-    return None
 
 
 # Unused argument "session", but pylint complains if it is renamed "_session"
